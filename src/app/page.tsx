@@ -8,11 +8,18 @@ export default function Home() {
   const [totalScore, setTotalScore] = useState(0);
 
   const resetProgress = () => {
-    // Reset cookies
-    document.cookie = "animalProgress=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "totalScore=0; path=/;";
+    // Alle animalQuiz Einträge aus dem SessionStorage löschen
+    Object.keys(sessionStorage).forEach(key => {
+      if (key.startsWith('animalQuiz_')) {
+        sessionStorage.removeItem(key);
+      }
+    });
+    
     setTotalScore(0);
     alert('Fortschritt wurde zurückgesetzt!');
+    
+    // Trigger storage event damit andere Komponenten aktualisiert werden
+    window.dispatchEvent(new Event('storage'));
   };
 
   return (
